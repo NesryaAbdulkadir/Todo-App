@@ -1,0 +1,89 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.form-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+  width: 60%;
+  margin: 0 auto;
+  padding: 20px;
+}
+.todo-input {
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 1.3rem;
+  padding: 12px 15px;
+  width: 50%;
+  border: none;
+  border-bottom: 3px solid #f5c21c;
+  outline: none;
+}
+.todo-btn {
+  max-width: max-content;
+  padding: 10px 15px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  background: transparent;
+  color: black;
+  border: none;
+  border-bottom: 3px solid #1c39f5;
+  position: relative;
+  z-index: 999;
+  transition: color 0.6s linear;
+}
+.todo-btn::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  background: #1c39f5;
+  transition: height 0.5s linear;
+  z-index: -1;
+}
+
+.todo-btn:hover::after {
+  height: 100%;
+}
+.todo-btn:hover {
+  color: white;
+}
+
+.todo-card-container {
+  width: 40%;
+  margin: 30px auto;
+  padding: 20px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+.todo-card {
+  font-size: 1.2rem;
+  list-style: none;
+}
+.completed {
+  text-decoration: line-through;
+  color: grey;
+}
+.todo-cards {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-left: 3px solid #f5c21c;
+  box-shadow: 0 3px 2px rgba(0, 0, 0, 0.051);
+  padding: 20px;
+  cursor: pointer;
+}
+.todo-card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
