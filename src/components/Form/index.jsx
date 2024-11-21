@@ -53,13 +53,11 @@ export default function Form({
   }
 
   return (
-    <div>
-      <form onSubmit={handleSubmit} className={className}>
-        {formControl?.length
-          ? formControl?.map((element) => renderFromElement(element))
-          : null}
-        <Button text={btnText} type="submit" className={ButtonClassName} />
-      </form>
-    </div>
+    <form onSubmit={handleSubmit} className={className}>
+      {formControl?.length
+        ? formControl?.map((element) => renderFromElement(element))
+        : null}
+      <Button text={btnText} type="submit" className={ButtonClassName} />
+    </form>
   );
 }

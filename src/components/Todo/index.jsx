@@ -13,6 +13,13 @@ export default function Todo() {
   const [todos, setTodos] = useState([]);
   const [editedTodo, setEditedTodo] = useState(null);
 
+  useEffect(() => {
+    const localTodos = localStorage.getItem("todos");
+    if (!localTodos) return;
+    const oldTodos = JSON.parse(localTodos);
+    setTodos(oldTodos);
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (todoData.Todo) {
@@ -33,6 +40,14 @@ export default function Todo() {
     }
     setTodoData(initialFormData);
   };
+
+  useEffect(() => {
+    if (todos.length > 0) addToLocalStorage();
+  }, [todos]);
+
+  function addToLocalStorage() {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }
 
   function toggleTodo(id) {
     const index = todos.findIndex((todo) => todo.id === id);
@@ -62,12 +77,12 @@ export default function Todo() {
   console.log("data", todoData);
 
   return (
-    <div>
+    <div className="todo-container">
       <Form
         formControl={todoElements}
         formData={todoData}
         setFormData={setTodoData}
-        btnText={"Add Task"}
+        btnText={editedTodo ? " Edit Task" : "Add Task"}
         handleSubmit={handleSubmit}
         className={"form-container"}
         inputClassName={"todo-input"}

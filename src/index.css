@@ -3,21 +3,25 @@
   padding: 0;
   box-sizing: border-box;
 }
+.todo-container {
+  margin-top: 80px;
+}
 .form-container {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 25px;
-  width: 60%;
-  margin: 0 auto;
+  width: 70%;
+  margin: 0px auto;
   padding: 20px;
+  margin-top: 30px;
 }
 .todo-input {
   padding: 10px;
   margin-bottom: 10px;
   font-size: 1.3rem;
   padding: 12px 15px;
-  width: 50%;
+  width: 60%;
   border: none;
   border-bottom: 3px solid #f5c21c;
   outline: none;
@@ -27,8 +31,8 @@
   padding: 10px 15px;
   font-size: 1.2rem;
   font-weight: bold;
-  background: transparent;
   color: black;
+  background: white;
   border: none;
   border-bottom: 3px solid #1c39f5;
   position: relative;
@@ -55,7 +59,7 @@
 }
 
 .todo-card-container {
-  width: 40%;
+  width: 50%;
   margin: 30px auto;
   padding: 20px;
   border-radius: 5px;
@@ -80,10 +84,37 @@
   box-shadow: 0 3px 2px rgba(0, 0, 0, 0.051);
   padding: 20px;
   cursor: pointer;
+  gap: 20px;
 }
 .todo-card-actions {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 20px;
+}
+
+@media screen and (max-width: 1024px) {
+  .form-container {
+    width: 90%;
+  }
+  .todo-card-container {
+    width: 90%;
+  }
+}
+@media screen and (max-width: 480px) {
+  .form-container {
+    width: 100%;
+    flex-direction: column;
+  }
+  .todo-input {
+    width: 100%;
+  }
+  .todo-cards {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .todo-card-actions {
+    width: 100%;
+    align-items: center;
+  }
 }
