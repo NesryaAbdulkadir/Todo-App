@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { todoElements } from "../../config";
 import Form from "../Form";
 import Card from "../Card";
 import { Delete, Edit } from "lucide-react";
+import DropArea from "../DropArea";
 
 const initialFormData = {
   todo: "",
@@ -12,6 +13,7 @@ export default function Todo() {
   const [todoData, setTodoData] = useState(initialFormData);
   const [todos, setTodos] = useState([]);
   const [editedTodo, setEditedTodo] = useState(null);
+  const [activeCard, setActiveCard] = useState(null);
 
   useEffect(() => {
     const localTodos = localStorage.getItem("todos");
@@ -24,8 +26,6 @@ export default function Todo() {
     e.preventDefault();
     if (todoData.Todo) {
       if (editedTodo) {
-        console.log("edited", editedTodo);
-
         const updateTodo = todos.map((todo) =>
           todo.id === editedTodo ? { ...todo, todo: todoData.Todo } : todo
         );
@@ -42,7 +42,7 @@ export default function Todo() {
   };
 
   useEffect(() => {
-    if (todos.length > 0) addToLocalStorage();
+    addToLocalStorage();
   }, [todos]);
 
   function addToLocalStorage() {
@@ -58,8 +58,10 @@ export default function Todo() {
   }
 
   function handleDelete(id) {
-    const newTodo = todos.filter((todo) => todo.id !== id);
-    setTodos(newTodo);
+    const newTodos = todos.filter((todo) => todo.id !== id);
+
+    setTodos(newTodos);
+    addToLocalStorage();
   }
 
   function handleEdit(id) {
@@ -71,10 +73,17 @@ export default function Todo() {
     if (todoToEdit) {
       setTodoData({ Todo: todoToEdit.todo });
       setEditedTodo(id);
-      console.log("Edit", editedTodo);
     }
   }
-  console.log("data", todoData);
+
+  function onDrag(position) {
+    if (activeCard === null || activeCard === undefined) return;
+
+    const taskToMove = todos[activeCard];
+    const updatedTodos = todos.filter((task, index) => index !== activeCard);
+    updatedTodos.splice(position, 0, taskToMove);
+    setTodos(updatedTodos);
+  }
 
   return (
     <div className="todo-container">
@@ -89,22 +98,31 @@ export default function Todo() {
         ButtonClassName={"todo-btn"}
       />
       <ul className="todo-card-container">
+        <DropArea onDrop={() => onDrag(0)} />
+
         {todos?.length > 0
           ? todos.map((todo, index) => (
-              <div
-                key={index}
-                className={"todo-cards" + (todo.completed ? " completed" : "")}
-              >
-                <Card
-                  className={"todo-card"}
-                  content={todo.todo}
-                  onClick={() => toggleTodo(todo.id)}
-                />
-                <div className="todo-card-actions">
-                  <Delete onClick={() => handleDelete(todo.id)} />
-                  <Edit onClick={() => handleEdit(todo.id)} />
+              <Fragment key={index}>
+                <div
+                  className={
+                    "todo-cards" + (todo.completed ? " completed" : "")
+                  }
+                  draggable
+                  onDragStart={() => setActiveCard(index)}
+                  onDragEnd={() => setActiveCard(null)}
+                >
+                  <Card
+                    className={"todo-card"}
+                    content={todo.todo}
+                    onClick={() => toggleTodo(todo.id)}
+                  />
+                  <div className="todo-card-actions">
+                    <Delete onClick={() => handleDelete(todo.id)} />
+                    <Edit onClick={() => handleEdit(todo.id)} />
+                  </div>
                 </div>
-              </div>
+                <DropArea onDrop={() => onDrag(index + 1)} />
+              </Fragment>
             ))
           : null}
       </ul>
